@@ -1,6 +1,13 @@
-# electron-quick-start
+# COMP7305 - Group12 Stack Overflow Data Analysis
 
-**Clone and run for a quick way to see Electron in action.**
+**The model we trained**
+Recommend more other tags for those posts with less than 3 tags
+
+**The dataset we used**
+From: https://archive.org/details/stackexchange
+We only use part of the dataset to train our model (26gb, Posts from 2008 to 2014)
+
+**Installation Step**
 
 This is a minimal Electron application based on the [Quick Start Guide](https://electronjs.org/docs/tutorial/quick-start) within the Electron documentation.
 

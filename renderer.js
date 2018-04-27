@@ -8,11 +8,38 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
   conn.createChannel(function(err, ch) {
     ch.assertQueue('', {exclusive: true}, function(err, q) {
 
+      // var corr = generateUuid();
+      // // input question id
+      // var num = parseInt("1848");
+
+      // console.log(' [x] Requesting fib(%d)', num);
+
+      // ch.sendToQueue('rpc_queue',
+      //   new Buffer(num.toString()),
+      //   { correlationId: corr, replyTo: q.queue });
+
+      // ch.consume(q.queue, function(msg) {
+      //   if (msg.properties.correlationId === corr) {
+      //     console.log(' [.] Got %s', msg.content.toString());
+      //     setTimeout(function() { conn.close(); process.exit(0) }, 25500);
+      //   }
+      // }, {noAck: true});
+
       ch.consume(q.queue, function(msg) {
-        if (msg.properties.correlationId === corr) {
+        // if (msg.properties.correlationId === corr) {
+          
           console.log(' [.] Got %s', msg.content.toString());
-          setTimeout(function() { conn.close(); process.exit(0) }, 25500);
-        }
+          if(msg.pid){
+            var template = $('#template-tag').html();
+            Mustache.parse(template);   // optional, speeds up future uses
+            var rendered = "";
+            for(var i = 0; i < msg.content.length; i++){
+              rendered += Mustache.render(template, {tag: msg.content[i].tag, rating: msg.content[i].rating});
+            }
+            $('#tag-'+pid).html(rendered);
+          }
+          // setTimeout(function() { conn.close(); process.exit(0) }, 25500);
+        // }
       }, {noAck: true});
 
       _predict = function(pid){
@@ -111,7 +138,7 @@ function renderAge(data){
   // 指定图表的配置项和数据
   var option = {
       title: {
-          text: 'Ages Count'
+          text: 'Ages Statistics'
       },
       tooltip: {},
       legend: {
@@ -153,7 +180,7 @@ function renderCountry(data){
 
     var option = {
         title: {
-            text: 'Stack Overflow World Population',
+            text: 'Stack Overflow User Distribution',
             subtext: '',
             left: 'left',
             top: 'top'
@@ -222,12 +249,12 @@ function renderTag(data){
 
     option = {
         tooltip: {},
-        title: [{
-            text: 'Tags Count',
+        title: {
+            text: 'Tags Statistics',
             subtext: '',
             // x: '25%',
             textAlign: 'left'
-        }],
+        },
         legend: {
             data:['Percentage of Tags Used in Posts']
         },

@@ -1,10 +1,40 @@
 {
-  "name": "electron-quick-start",
+  "name": "comp7305-grp12",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "COMP7305 Group12 Stack Overflow Data Analysis",
+  "author": "comp7305-grp12",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "postinstall": "install-app-deps",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "build": {
+    "appId": "org.hku.comp7305.grp12",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS"
+    }
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -17,7 +47,8 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^1.8.4"
+    "electron": "^1.8.4",
+    "electron-builder": "^20.10.0"
   },
   "dependencies": {
     "amqplib": "^0.5.2",

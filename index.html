@@ -99,14 +99,16 @@
           <br/>
           <div class="border rounded bg-light p-3">
               Tags:<br/>
-              <span class="badge badge-secondary">C#</span>&nbsp;
-              <span class="badge badge-secondary">HTML</span>&nbsp;
-              <span class="badge badge-secondary">Javascript</span>&nbsp;
-              <span class="badge badge-secondary">python</span>
+              <div id="tag-{{pid}}">
+              </div>
             </div>
         </div>
       </div>
       <br/>
+    </script>
+
+    <script id="template-tag" type="x-tmpl-mustache">
+        <span class="badge badge-secondary">{{tag}}({{rating}})</span>&nbsp;
     </script>
 
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
@@ -124,6 +126,9 @@
       require('./renderer.js');
     </script>
     <script type="text/javascript">
+      var string = '[{"c#": 0.9654772580270655, "taghash": 3104}, {"image": 0.7306751244542461, "taghash": 8038747}]';
+      var json = JSON.parse(string);
+      console.log(json);
 
       function predict(pid){
         _predict(pid);
