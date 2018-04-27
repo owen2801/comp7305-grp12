@@ -12,6 +12,13 @@ We only use part of the dataset to train our model (26gb, Posts from 2008 to 201
 
 **Installation Step**
 
+Option 1. Run the image directly on a MacOS machine
+
+```bash
+Open the "dist" folder, click "comp7305-grp12-1.0.0.dmg"
+Then move the "comp7305-grp12.app" to Application Folder
+```
+
 ```bash
 # Clone this repository
 git clone https://github.com/owen2801/comp7305-grp12.git
