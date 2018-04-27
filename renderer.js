@@ -28,7 +28,7 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
       ch.consume(q.queue, function(msg) {
         // if (msg.properties.correlationId === corr) {
           console.log(' [.] Got %s', msg.content.toString());
-          var json = JSON.parese(msg.content.toString());
+          var json = JSON.pares(msg.content.toString());
           var pid = json[0].Qid;
           json.shift();
           console.log(json);
@@ -60,7 +60,7 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
           { correlationId: corr, replyTo: q.queue });
       }
 
-      _predict(1848);
+      // _predict(1848);
 
     });
   });

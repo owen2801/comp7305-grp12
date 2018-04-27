@@ -23,8 +23,8 @@ xxxxxx
 Option 1. (Only support MacOS) Run the image directly on a MacOS machine
 
 ```bash
-Open the "dist" folder, click "comp7305-grp12-1.0.0.dmg"
-Move the "comp7305-grp12.app" to Application Folder
+Open the "dist/mac" folder, click "comp7305-grp12.app"
+The application will run automatically
 ```
 
 Option 2. Run from the source code

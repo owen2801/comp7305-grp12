@@ -36,7 +36,7 @@
       "target": "NSIS"
     }
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/owen2801/comp7305-grp12",
   "keywords": [
     "Electron",
     "quick",
@@ -44,8 +44,7 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "comp7305-grp12",
   "devDependencies": {
     "electron": "^1.8.4",
     "electron-builder": "^20.10.0"
