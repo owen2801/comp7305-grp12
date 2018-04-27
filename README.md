@@ -16,7 +16,7 @@ xxxxxx
 xxxxxx
 ```
 
-***Step 2***. Download and install nodejs from [here](https://nodejs.org/en/)
+***Step 2***. Download and install nodejs on your local machine from [here](https://nodejs.org/en/)
 
 ***Step 3***. There are 2 options as described below:
 
