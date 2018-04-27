@@ -20,7 +20,7 @@ Option 1 (Only support MacOS). Run the image directly on a MacOS machine
 
 ```bash
 Open the "dist" folder, click "comp7305-grp12-1.0.0.dmg"
-Then move the "comp7305-grp12.app" to Application Folder
+Move the "comp7305-grp12.app" to Application Folder
 ```
 
 Option 2. Run from the source code
