@@ -26,8 +26,10 @@ Move the "comp7305-grp12.app" to Application Folder
 Option 2. Run from the source code
 
 ```bash
-# Clone this repository or download directly from https://github.com/owen2801/comp7305-grp12.git
+# Clone this repository or download directly
 git clone https://github.com/owen2801/comp7305-grp12.git
+or
+download from [here](https://github.com/owen2801/comp7305-grp12.git)
 # Go into the repository
 cd comp7305-grp12
 # Install dependencies
