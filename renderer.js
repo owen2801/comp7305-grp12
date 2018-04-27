@@ -27,15 +27,21 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
 
       ch.consume(q.queue, function(msg) {
         // if (msg.properties.correlationId === corr) {
-          
           console.log(' [.] Got %s', msg.content.toString());
-          if(msg.pid){
+          var json = JSON.parese(msg.content.toString());
+          var pid = json[0].Qid;
+          json.shift();
+          console.log(json);
+          if(pid){
             var template = $('#template-tag').html();
             Mustache.parse(template);   // optional, speeds up future uses
             var rendered = "";
-            for(var i = 0; i < msg.content.length; i++){
-              rendered += Mustache.render(template, {tag: msg.content[i].tag, rating: msg.content[i].rating});
-            }
+            Object.keys(json).map(function (key) {
+              rendered += Mustache.render(template, {tag: key, rating: json[key]});
+            })
+            // for(var i = 1; i < json.length; i++){
+            //   rendered += Mustache.render(template, {tag: json[i].tag, rating: msg.content[i].rating});
+            // }
             $('#tag-'+pid).html(rendered);
           }
           // setTimeout(function() { conn.close(); process.exit(0) }, 25500);
