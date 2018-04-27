@@ -16,7 +16,7 @@ In our case, we only use part of the dataset to train our model (total 26gb, sel
 
 ***Step 2***. There are 2 options as described below:
 
-Option 1 (Only support MacOS). Run the image directly on a MacOS machine
+Option 1. (Only support MacOS) Run the image directly on a MacOS machine
 
 ```bash
 Open the "dist" folder, click "comp7305-grp12-1.0.0.dmg"
@@ -26,7 +26,7 @@ Move the "comp7305-grp12.app" to Application Folder
 Option 2. Run from the source code
 
 ```bash
-# Clone this repository
+# Clone this repository or download directly from [here](https://github.com/owen2801/comp7305-grp12.git)
 git clone https://github.com/owen2801/comp7305-grp12.git
 # Go into the repository
 cd comp7305-grp12
