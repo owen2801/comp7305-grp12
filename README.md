@@ -6,15 +6,15 @@ Recommend more other tags for those posts with less than 3 tags
 
 **The dataset we used**
 
-From: [Sites here](https://archive.org/details/stackexchange)
+From: [here](https://archive.org/details/stackexchange)
 
 We only use part of the dataset to train our model (26gb, Posts from 2008 to 2014)
 
 **Installation Step**
 
-Step 1. Download and install nodejs from [Sites here](https://nodejs.org/en/)
+***Step 1***. Download and install nodejs from [here](https://nodejs.org/en/)
 
-Step 2. There are 2 options as described below:
+***Step 2***. There are 2 options as described below:
 
 Option 1 (Only support MacOS). Run the image directly on a MacOS machine
 
