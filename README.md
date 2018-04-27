@@ -1,9 +1,5 @@
 # COMP7305 Group12 - Stack Overflow Data Analysis
 
-**The Model We Trained**
-
-Recommend more other tags for those posts with less than 3 tags
-
 **The Dataset We Used**
 
 Download from [here](https://archive.org/details/stackexchange)
@@ -12,9 +8,17 @@ In our case, we only use part of the dataset to train our model (total 26gb, sel
 
 **Installation Step**
 
-***Step 1***. Download and install nodejs from [here](https://nodejs.org/en/)
+***Step 1***. Make sure the spark server is running
+```bash
+# After login to student33 machine, type the below command
+xxxxxx
+# Then
+xxxxxx
+```
 
-***Step 2***. There are 2 options as described below:
+***Step 2***. Download and install nodejs from [here](https://nodejs.org/en/)
+
+***Step 3***. There are 2 options as described below:
 
 Option 1. (Only support MacOS) Run the image directly on a MacOS machine
 
