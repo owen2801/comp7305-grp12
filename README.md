@@ -29,7 +29,7 @@ Option 2. Run from the source code
 # Clone this repository or download directly
 git clone https://github.com/owen2801/comp7305-grp12.git
 or
-download from [here](https://github.com/owen2801/comp7305-grp12.git)
+download from https://github.com/owen2801/comp7305-grp12.git
 # Go into the repository
 cd comp7305-grp12
 # Install dependencies
