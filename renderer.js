@@ -28,7 +28,7 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
       ch.consume(q.queue, function(msg) {
         // if (msg.properties.correlationId === corr) {
           console.log(' [.] Got %s', msg.content.toString());
-          var json = JSON.pares(msg.content.toString());
+          var json = JSON.parse(msg.content.toString());
           var pid = json[0].Qid;
           json.shift();
           console.log(json);
@@ -53,10 +53,10 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
         // input question id
         var num = parseInt(pid);
 
-        console.log(' [x] Requesting fib(%d)', num);
+        // console.log(' [x] Requesting fib(%d)', JSON.stringify({"type": 0, "id": num}));
 
         ch.sendToQueue('rpc_queue',
-          new Buffer(num.toString()),
+          new Buffer({"type": 0, "id": parseInt(num)}),
           { correlationId: corr, replyTo: q.queue });
       }
 

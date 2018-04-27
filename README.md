@@ -23,6 +23,7 @@ xxxxxx
 Option 1. (Only support MacOS) Run the image directly on a MacOS machine
 
 ```bash
+Download the repository from https://github.com/owen2801/comp7305-grp12.git
 Open the "dist" folder, click "comp7305-grp12-1.0.0.dmg"
 Move the "comp7305-grp12.app" to Application Folder
 ```
