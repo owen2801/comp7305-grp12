@@ -1,10 +1,10 @@
 # COMP7305 Group12 - Stack Overflow Data Analysis
 
-**The model we trained**
+**The Model We Trained**
 
 Recommend more other tags for those posts with less than 3 tags
 
-**The dataset we used**
+**The Dataset We Used**
 
 Download from [here](https://archive.org/details/stackexchange)
 
