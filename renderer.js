@@ -27,23 +27,58 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
 
       ch.consume(q.queue, function(msg) {
         // if (msg.properties.correlationId === corr) {
-          console.log(' [.] Got %s', msg.content.toString());
+          // console.log(' [.] Got %s', msg.content.toString());
           var json = JSON.parse(msg.content.toString());
-          var pid = json[0].Qid;
-          json.shift();
-          console.log(json);
-          if(pid){
-            var template = $('#template-tag').html();
-            Mustache.parse(template);   // optional, speeds up future uses
+          console.log("Got ", json);
+          if(json && json[0].Qid){
+            var pid = json[0].Qid;
+            json.shift();
+            if(pid){
+              $("#btn-predict-"+pid).html("Done");
+              var template = $('#template-tag').html();
+              Mustache.parse(template);   // optional, speeds up future uses
+              var rendered = "";
+              for(var i = 0; i < json.length; i++){
+                var temp = {};
+                Object.keys(json[i]).map(function (key) {
+                  if(key == "grp12taghash"){
+                    temp["grp12taghash"] = json[i][key];
+                  } else {
+                    temp["tag"] = key;
+                    temp["rating"] = json[i][key].toFixed(2);
+                  }
+                })
+                rendered += Mustache.render(template, temp);
+                // rendered += Mustache.render(template, {tag: json[i].tag, rating: msg.content[i].rating});
+              }
+              
+              // for(var i = 1; i < json.length; i++){
+              //   rendered += Mustache.render(template, {tag: json[i].tag, rating: msg.content[i].rating});
+              // }
+              $('#tag-'+pid).html(rendered);
+            }
+
+          } else {
+            var pids = "(";
             var rendered = "";
-            Object.keys(json).map(function (key) {
-              rendered += Mustache.render(template, {tag: key, rating: json[key]});
-            })
-            // for(var i = 1; i < json.length; i++){
-            //   rendered += Mustache.render(template, {tag: json[i].tag, rating: msg.content[i].rating});
-            // }
-            $('#tag-'+pid).html(rendered);
+            for(var i = 0; i < json.length; i++){
+              Object.keys(json[i]).map(function (key) {
+                pids += "'"+key.toString() + "',";
+              })
+              // rendered += Mustache.render(template, {tag: json[i].tag, rating: msg.content[i].rating});
+            }
+            pids += "'0')";
+            if(json.length){
+              // Load posts
+              console.log('SELECT * FROM Posts WHERE Id in '+pids);
+              connection.query('SELECT * FROM Posts WHERE Id in '+pids, function (error, results, fields) {
+              // connection.query('SELECT * FROM Posts WHERE Id = 1848', function (error, results, fields) {
+                if (error) throw error;
+                loadSuggestPosts(results);
+              });
+            }
           }
+          
           // setTimeout(function() { conn.close(); process.exit(0) }, 25500);
         // }
       }, {noAck: true});
@@ -53,10 +88,26 @@ amqp.connect('amqp://202.45.128.135:13160', function(err, conn) {
         // input question id
         var num = parseInt(pid);
 
-        // console.log(' [x] Requesting fib(%d)', JSON.stringify({"type": 0, "id": num}));
+        var request = {"type": 0, "id": num};
+
+        console.log(' [x] Requesting prediction ', JSON.stringify(request).toString());
 
         ch.sendToQueue('rpc_queue',
-          new Buffer({"type": 0, "id": parseInt(num)}),
+          new Buffer(JSON.stringify(request).toString()),
+          { correlationId: corr, replyTo: q.queue });
+      }
+
+      _findRelated = function(hashvalue){
+        var corr = generateUuid();
+        // input question id
+        var req = parseInt(hashvalue);
+
+        var request = {"type": 1, "id": req};
+
+        console.log(' [x] Requesting related ', JSON.stringify(request).toString());
+
+        ch.sendToQueue('rpc_queue',
+          new Buffer(JSON.stringify(request).toString()),
           { correlationId: corr, replyTo: q.queue });
       }
 
@@ -87,7 +138,8 @@ var connection = mysql.createConnection({
 connection.connect();
 
 // Load posts
-connection.query('SELECT * FROM Posts ORDER BY RAND() LIMIT 10', function (error, results, fields) {
+connection.query('SELECT * FROM Posts ORDER BY RAND() LIMIT 50', function (error, results, fields) {
+// connection.query('SELECT * FROM Posts WHERE Id = 1848', function (error, results, fields) {
   if (error) throw error;
   loadPosts(results);
 });
@@ -112,17 +164,41 @@ connection.query('SELECT * FROM tag_count ORDER BY count DESC LIMIT 20', functio
   renderTag(results);
 });
  
-connection.end();
+// connection.end();
 
 // Load posts
 function loadPosts(data){
   var template = $('#template').html();
   Mustache.parse(template);   // optional, speeds up future uses
   var rendered = "";
+  var tid = 1;
   for(var i = 0; i < data.length; i++){
-    rendered += Mustache.render(template, {number: i+1, title: data[i].Title, body: _.unescape(data[i].Body), pid: data[i].Id});
+    var tags =  _.unescape(data[i].tag).match(/<(.*?)>/g);
+    if(tags.length >= 4){
+      for(var j = 0; j < tags.length; j++){
+        tags[j] = tags[j].substring(1, tags[j].length-1);
+      }
+      rendered += Mustache.render(template, {number: tid++, title: data[i].Title, body: _.unescape(data[i].Body), pid: data[i].Id, tag: tags});
+    }
   }
   $('#post-list').html(rendered);
+  // for(var i = 0; i < data.length; i++){
+  //   ages.push(data[i].age);
+  //   counts.push(data[i].count);
+  // }
+}
+
+// Load posts
+function loadSuggestPosts(data){
+  var template = $('#template-question').html();
+  Mustache.parse(template);   // optional, speeds up future uses
+  var rendered = "";
+  var tid = 1;
+  for(var i = 0; i < data.length; i++){
+    // var tags =  _.unescape(data[i].tag).match(/<(.*?)>/g);
+    rendered += Mustache.render(template, {number: tid++, title: data[i].Title, pid: data[i].Id});
+  };
+  $('#suggest-question').html(rendered);
   // for(var i = 0; i < data.length; i++){
   //   ages.push(data[i].age);
   //   counts.push(data[i].count);

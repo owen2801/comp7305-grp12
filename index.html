@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>COMP7305 Group12</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <!-- Include external CSS. -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -88,18 +88,53 @@
       </div>
     </div>
 
+    <!-- Statistics Modal -->
+    <div class="modal fade" id="sqModal" tabindex="-1" role="dialog" aria-labelledby="sqModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="statModalTitle">Suggest Questions</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
 
+            <div id="suggest-question"></div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+              <!-- // {{#tag}}
+              // <li>{{.}}</li>
+              // <span class="badge badge-secondary">{{.}}</span>&nbsp;
+
+              // <span data-toggle="modal" data-target="#sqModal" class="badge badge-info" onclick="findRelated(3719330)">mysql(0.18)</span>
+              // {{/tag}} -->
     <script id="template" type="x-tmpl-mustache">
       <div class="card" style="width: 100%;">
         <div class="card-body">
-          <h5 class="card-title">Q{{number}}. {{{title}}}</h5>
+          <h5 class="card-title">Q{{number}}. {{{title}}} (Post ID: {{pid}})</h5>
           <p class="card-text">{{{body}}}</p>
-          <button class="btn btn-primary btn-sm" onclick="predict({{pid}})" class="card-link">Run Prediction</button>
+          <button id="btn-predict-{{pid}}" class="btn btn-primary btn-sm" onclick="predict({{pid}})" class="card-link">Run Prediction</button>
           <br/>
           <br/>
           <div class="border rounded bg-light p-3">
-              Tags:<br/>
+              Original Tags<br/>
+              {{#tag}}
+                <span class="badge badge-secondary">{{.}}</span>&nbsp;
+              {{/tag}}
+              <br/>
+              <br/>
+              Predicted Tags<br/>
               <div id="tag-{{pid}}">
+              <small>Check me out !</small>
               </div>
             </div>
         </div>
@@ -108,7 +143,11 @@
     </script>
 
     <script id="template-tag" type="x-tmpl-mustache">
-        <span class="badge badge-secondary">{{tag}}({{rating}})</span>&nbsp;
+        <span  data-toggle="modal" data-target="#sqModal" class="badge badge-info" onclick="findRelated({{grp12taghash}})">{{tag}}({{rating}})</span>&nbsp;
+    </script>
+
+    <script id="template-question" type="x-tmpl-mustache">
+        <h5>Q{{number}}. {{{title}}} (Post ID: {{pid}})</h5>
     </script>
 
     <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
@@ -123,13 +162,24 @@
       // var echarts = require('echarts/dist/echarts.min.js');
       // var world = require('echarts/map/js/world.js');
       var _predict = "";
+      var _findRelated = "";
       require('./renderer.js');
     </script>
     <script type="text/javascript">
 
       function predict(pid){
-        _predict(pid);
+        if(!$("#btn-predict-"+pid).hasClass("disabled")){
+          $("#btn-predict-"+pid).addClass("disabled");
+          $("#btn-predict-"+pid).html("Loading...");
+          _predict(pid);
+        }
       }
+
+      function findRelated(hashvalue){
+        $("#suggest-question").html("Loading...");
+        _findRelated(hashvalue);
+      }
+
       $(function() {
         // $('div#froala-editor').froalaEditor({
         //   // Set custom buttons with separator between them.
@@ -151,7 +201,12 @@
       }
       .container .title {
           color: white;
-        }
+      }
+      pre{
+        background-color: #e3e3e3;
+        padding: 10px;
+        border-radius: .25rem;
+      }
 
     </style>
   </body>
