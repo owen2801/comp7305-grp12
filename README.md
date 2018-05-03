@@ -1,30 +1,33 @@
-COMP7305 Group12 - Stack Overflow Data Analysis
+# COMP7305 Group12 - Stack Overflow Data Analysis
 
-#####Dataset Location######
+**Part I. Dataset Location**
+
 hdfs:///stackoverflow/TrainPosts26G.xml
 
+**Part II. Software Installation**
 
-#####Software Installation######
+***Step 1. Install Docker***
 
------To install Docker
-
+```bash
 1. curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 2. sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 3. sudo apt-get update
 4. apt-cache policy docker-ce
 5. sudo apt-get install -y docker-ce
 6. check docker status with: sudo systemctl status docker
+```
 
+***Step 2. Install RabbitMQ***
 
------To install RabbitMQ
-
+```bash
 1. docker run -d --name rabbitmq --publish 5671:5671 \
  --publish 5672:5672 --publish 4369:4369 --publish 25672:25672 --publish 15671:15671 --publish 15672:15672 \
 rabbitmq:management
+```
 
+***Step 3. Install Hive***
 
-
------To install Hive
+```bash
 1. sudo wget http://apache.website-solution.net/hive/hive-1.2.2/apache-hive-1.2.2-bin.tar.gz
 
 2. sudo vim /etc/profile & sudo vim ~/.bashrc
@@ -82,10 +85,19 @@ export SPARK_HOME=/opt/spark-2.2.1-bin-hadoop2.7
 
 7. Run Hive:
 /opt/apache-hive-1.2.2-bin/bin/hive
+```
 
+***Step 4. Install RabbitMQ***
 
------To install Sqoop
+```bash
+1. docker run -d --name rabbitmq --publish 5671:5671 \
+ --publish 5672:5672 --publish 4369:4369 --publish 25672:25672 --publish 15671:15671 --publish 15672:15672 \
+rabbitmq:management
+```
 
+***Step 5. Install Sqoop***
+
+```bash
 1. Download sqoop from [here](http://archive.apache.org/dist/sqoop/1.4.6/)
 
 2. cd /home/lina/Software/Hadoop/
@@ -98,59 +110,77 @@ mv sqoop-1.4.6.bin__hadoop-2.0.4-alpha sqoop-1.4.6
    export SQOOP_HOME=/opt/Hadoop/sqoop-1.4.6
    export PATH=$PATH:$SQOOP_HOME/bin 
    source ~/.bashrc
+
 5. cd /opt/Hadoop/sqoop-1.4.6/conf
 cp sqoop-env-template.sh sqoop-env.sh
 
 6. download mysql-connector-java-5.1.42-bin.jar into /opt/Hadoop/sqoop-1.4.6/lib/
 
 7. Testing with sqoop version
+```
 
- 
------To install MySQL
+***Step 6. Install Mysql***
 
+```bash
 1. sudo apt-get install mysql-server
-
 2. Run MySQL: mysql -u root -proot
+```
 
+***Step 7. Install Frontend Package (Run In Local Machine)***
 
------To install Electron
-1. Download and install nodejs on your local machine from https://nodejs.org/en/
-2. There are 2 options as described below:
-**Option 1. (Only support MacOS) Run the image directly on a MacOS machine
+Download and install nodejs on your local machine from [here](https://nodejs.org/en/)
 
+There are 2 options as described below:
+
+Option 1. (Only support MacOS) Run the image directly on a MacOS machine
+
+```bash
 Download the repository from https://github.com/owen2801/comp7305-grp12.git
 Open the "dist" folder, click "comp7305-grp12-1.0.0.dmg"
 Move the "comp7305-grp12.app" to Application Folder
+```
 
-**Option 2. Run from the source code
+Option 2. Run from the source code
 
-#### Clone this repository or download directly git clone https://github.com/owen2801/comp7305-grp12.git ####
+```bash
+# Clone this repository or download directly
+git clone https://github.com/owen2801/comp7305-grp12.git
 or
 download from https://github.com/owen2801/comp7305-grp12.git
-#### Go into the repository ####
+# Go into the repository
 cd comp7305-grp12
-#### Install dependencies ####
+# Install dependencies
 npm install
-#### Run the app ####
+# Run the app
 npm start
+```
 
+**Part III. Train Model**
 
-#####Train Model######
------To train model
+***To train model***
+
 (File name:ALS_train.scala; Location: hduser@student33 desktop)
 
+```bash
 1. Open Spark Shell command:
 /opt/spark-2.2.1-bin-hadoop2.7/bin/spark-shell --master yarn --num-executors 12 --executor-cores 2 --executor-memory 2G
 
 2. Run train model in scala command:
 :load ALS_train.scala
+```
 
+***Configuration files***
 
------Configuration files
+```bash
 /etc/xen-tools/xen-tools.conf
 /opt/hadoop-2.7.5/etc/hadoop/mapred-site.xml
 /opt/hadoop-2.7.5/etc/hadoop/yarn-site.xml
+```
 
-#####Start Server######
+**Part IV. Start Server**
 
+```bash
+1. Copy the "PredictionService.py" from this repository to server
+2. Run 
 /opt/spark-2.2.1-bin-hadoop2.7/bin/spark-submit --master yarn PredictionService.py
+```
